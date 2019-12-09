@@ -82,6 +82,11 @@
 > Detalhes de filmes, busca na api e rota
 > Estudo sobre Promise, async, await para trazer dados dependentes de resposta da api
 
+## Conclusão
+> O básico do Vue foi possível aprender, entretanto é necessário mais que isso para um sistema entrar em produção.
+> Ainda falta aprender o que funciona melhor em termos de organização dos componentes, reaproveitamento de código e roteamento.
+> O aprendizado foi relativamente rapido, levando em consideração que foi de forma autodidata.
+
 ## Build Setup
 
 ``` bash
