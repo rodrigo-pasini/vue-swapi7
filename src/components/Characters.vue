@@ -1,6 +1,9 @@
 <template>
     <div class='row mt-4'>
-        <b-col v-for="(char, index) in chars" v-bind:key=index style="min-width: 20%; max-width: 20%; margin-top: 15px;">
+        <b-col
+            v-for="(char, index) in chars" v-bind:key=index
+            style="min-width: 20%; max-width: 20%; margin-top: 15px;"
+        >
             <b-card
                 :title='char.name'
                 img-top
@@ -27,29 +30,25 @@
 </template>
 
 <script>
-    
-    export default {
-        name: 'Characters',
-        
-        beforeCreate: function() {
-            var proxy = 'http://cors-anywhere.herokuapp.com/';
-            var url = 'https://swapi.co/api/people';
-            this.$http.get(proxy + url).then(
-                function(response) {
-                    this.chars = response.body.results;
-                    console.log(this.chars);
-                }
-            );
+export default {
+    name: 'Characters',
 
-            
-        },
-        data(){
-            return {
-                chars: []
-            }
-        },
-        methods: {
-            
-        }
-    };
+    beforeCreate: function () {
+        const proxy = 'http://cors-anywhere.herokuapp.com/';
+        const url = 'https://swapi.co/api/people';
+        this.$http.get(proxy + url).then(
+            function (response) {
+                this.chars = response.body.results;
+                console.log(this.chars);
+            },
+        );
+    },
+    data() {
+        return {
+            chars: [],
+        };
+    },
+    methods: {
+    },
+};
 </script>
