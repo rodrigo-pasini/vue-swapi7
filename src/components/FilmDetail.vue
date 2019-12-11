@@ -4,7 +4,7 @@
             <b-col style="min-width: 100%; max-width: 100%; margin-top: 15px;">
                 <b-card
                     :title='film.title'
-                    :img-src='poster'
+                    :sub-title="'Episódio: ' + film.episode_id"
                     :img-alt='film.title'
                     img-top
                     tag='article'
@@ -12,11 +12,17 @@
                     class=""
                 >
                     <b-card-text>
-                        <div class="row" style="margin:4px;">
-                            <div class="text-muted">Episódio {{film.episode_id}}</div>
+                        
+                        <div class="row" style="margin:0px;">
+                            <div class="col-md-8">
+                                {{film.opening_crawl}}
+                            </div>
+                            <div class="col-md-4">
+                                <b-img-lazy v-bind="mainProps" :src="poster" alt="Image 1"></b-img-lazy>
+                            </div>
                         </div>
                         <div class="row" style="margin:5px">
-                            {{film.opening_crawl}}
+                            
                         </div>
                         <dl style="margin:4px;">
                             <dt>Data de Lançamento</dt>
@@ -29,17 +35,63 @@
                     </b-card-text>
                     <div class="row">
                         <div>
-                            <b-tabs content-class="mt-3">
+                            <b-tabs content-class="mt-6">
                                 <b-tab title="Personagens" active>
                                     <b-table 
                                         striped 
+                                        responsive="sm"
                                         hover
                                         small
                                         :busy.sync='isbusy'
                                         :items='chars'
                                         :fields='fields'
                                         
-                                    ></b-table>
+                                    >
+                                    <template v-slot:cell(show_details)="row">
+                                        <b-button size="sm" @click="row.toggleDetails" class="btn-sm btn-success mr-2">
+                                        {{ row.detailsShowing ? 'Esconder' : 'Mostrar'}} Detalhes
+                                        </b-button>
+                                    </template>
+                                    <template v-slot:row-details="row">
+                                        <b-card>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Nascimento:</b></b-col>
+                                            <b-col>{{ row.item.birth_year }}</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Sexo:</b></b-col>
+                                            <b-col>{{ row.item.gender }}</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Cor dos olhos:</b></b-col>
+                                            <b-col>{{ row.item.eye_color }}</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Cor do cabelo:</b></b-col>
+                                            <b-col>{{ row.item.hair_color }}</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Altura:</b></b-col>
+                                            <b-col>{{ row.item.height }} cm</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Peso:</b></b-col>
+                                            <b-col>{{ row.item.mass }} Kg</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Cor da Pele:</b></b-col>
+                                            <b-col>{{ row.item.skin_color }}</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Planeta:</b></b-col>
+                                            <b-col>{{ row.item.world }}</b-col>
+                                        </b-row>
+
+                                        <b-button size="sm" @click="row.toggleDetails">Esconder</b-button>
+                                        </b-card>
+                                    </template>
+                                    
+                                    </b-table>
                                 </b-tab>
                                 <b-tab title="Naves">
                                     <b-table 
@@ -48,8 +100,26 @@
                                         :busy.sync='isbusy'
                                         :items='starships'
                                         :fields='ssfields'
-                                        
-                                    ></b-table>
+                                    >
+                                    <template v-slot:cell(show_details)="row">
+                                        <b-button size="sm" @click="row.toggleDetails" class="btn-sm btn-success mr-2">
+                                        {{ row.detailsShowing ? 'Esconder' : 'Mostrar'}} Detalhes
+                                        </b-button>
+                                    </template>
+                                    <template v-slot:row-details="row">
+                                        <b-card>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Classe:</b></b-col>
+                                            <b-col>{{ row.item.starship_class }}</b-col>
+                                        </b-row>
+                                        <b-row class="mb-2">
+                                            <b-col sm="6" class="text-sm-right"><b>Custo:</b></b-col>
+                                            <b-col>{{ row.item.cost_in_credits }}</b-col>
+                                        </b-row>
+                                        <b-button size="sm" @click="row.toggleDetails">Esconder</b-button>
+                                        </b-card>
+                                    </template>
+                                    </b-table>
                                 </b-tab>
                                 <b-tab title="Veículos">
                                     <b-table 
@@ -87,11 +157,22 @@
                 imgsubtitle: "",
                 text: "Swapi Star Wars API",
                 poster: '',
+                episode: '',
+                mainProps: {
+                    center: true,
+                    fluid: true,
+                    blank: true,
+                    thumbnail: true,
+                    blankColor: '#bbb',
+                    width: 600,
+                    height: 400,
+                    class: 'w-25'
+                },
                 proxy: '',
                 isbusy: true,
-                fields: [{key:'name', label:'Nome'}],
-                ssfields:[{key:'name', label:'Nome'}, {key:'model', label:'Modelo'}, {key:'manufacturer', label:'Fabricante'}],
-                vehiclesfields: [{key: 'name', label: 'Nome'}, {key:'model', label:'Modelo'}, {key:'manufacturer', label:'Fabricante'}],
+                fields: [{key:'name', label:'Nome'}, {key:'show_details', label:' '}],
+                ssfields:[{key:'name', label:'Nome'}, {key:'model', label:'Modelo'}, {key:'manufacturer', label:'Fabricante'}, {key:'show_details', label:' '}],
+                vehiclesfields: [{key: 'name', label: 'Nome'}, {key:'model', label:'Modelo'}, {key:'manufacturer', label:'Fabricante'}, {key:'show_details', label:' '}],
                 items: [],
                 chars: [],
                 starships: [],
@@ -137,6 +218,8 @@
             getChar: async function (char) {
                 try {
                     const dataapi = await axios.get(char)
+                    const dataapiw = await axios.get(dataapi.data.homeworld);
+                    dataapi.data.world = dataapiw.data.name;
                     this.chars.push(dataapi.data);
                 } catch (e){
                     console.log(e);
@@ -160,7 +243,8 @@
                     console.log(e);
                 }
                 
-            }
+            },
+            
         },
     };
 </script>
