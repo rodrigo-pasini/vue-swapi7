@@ -6,7 +6,7 @@
                     :title='film.title'
                     :img-src='poster'
                     :img-alt='film.title'
-                    img-right
+                    img-top
                     tag='article'
                     style=" max-width: 100%;"
                     class=""
@@ -56,8 +56,8 @@
                                         striped 
                                         hover 
                                         :busy.sync='isbusy'
-                                        :items='chars'
-                                        :fields='fields'
+                                        :items='vehicles'
+                                        :fields='vehiclesfields'
                                         
                                     ></b-table>
                                 </b-tab>
@@ -74,7 +74,7 @@
 <script>
     import axios from 'axios'
     import simplechar from '@/components/SimpleCharacters'
-import { async, reject } from 'q';
+    import { async, reject } from 'q';
 
     export default {
         name: 'FilmDetail',
@@ -90,17 +90,19 @@ import { async, reject } from 'q';
                 proxy: '',
                 isbusy: true,
                 fields: [{key:'name', label:'Nome'}],
-                ssfields:[{key:'name', label:'Nome'}, {key:'model', label:'Modelo'}],
+                ssfields:[{key:'name', label:'Nome'}, {key:'model', label:'Modelo'}, {key:'manufacturer', label:'Fabricante'}],
+                vehiclesfields: [{key: 'name', label: 'Nome'}, {key:'model', label:'Modelo'}, {key:'manufacturer', label:'Fabricante'}],
                 items: [],
                 chars: [],
                 starships: [],
+                vehicles: [],
             }
         },
         components: {
         },
         created: async function() {
-            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-            axios.defaults.headers.common['Access-Control-Expose-Headers'] = 'access-control-allow-origin';
+            // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            // axios.defaults.headers.common['Access-Control-Expose-Headers'] = 'access-control-allow-origin';
             const url = this.$route.params['film'];
             try {
                 const dataapi = await axios.get(url)
@@ -111,6 +113,9 @@ import { async, reject } from 'q';
                 });
                 this.film.starships.forEach(async element => {
                     await this.getStarships(element);
+                });
+                this.film.vehicles.forEach(async element => {
+                    await this.getVehicles(element);
                 });
             } catch (e){
                 console.log(e);
@@ -142,6 +147,15 @@ import { async, reject } from 'q';
                 try {
                     const dataapi = await axios.get(ss)
                     this.starships.push(dataapi.data);
+                } catch (e){
+                    console.log(e);
+                }
+                
+            },
+            getVehicles: async function (vehicles) {
+                try {
+                    const dataapi = await axios.get(vehicles)
+                    this.vehicles.push(dataapi.data);
                 } catch (e){
                     console.log(e);
                 }

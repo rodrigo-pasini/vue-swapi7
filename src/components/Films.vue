@@ -1,7 +1,5 @@
 <template>
     <div>
-
-    
         <div class='row mt-4'>
             <b-col v-for="(film, index) in films" v-bind:key=index style="min-width: 33%; max-width: 33%; margin-top: 15px;">
                 <b-card
@@ -24,7 +22,6 @@
                         </dl>
                     </b-card-text>
                     <b-button :to="{name: 'Film_detail', params:{film: film.url}}" variant="dark">Ver Detalhes</b-button>
-                    
                 </b-card>
             </b-col>
         </div>
@@ -33,7 +30,7 @@
 
 <script>
     import axios from 'axios'
-import { async } from 'q';
+    import { async } from 'q';
 
     export default {
         name: 'Films',
@@ -60,18 +57,10 @@ import { async } from 'q';
                     this.films[index].img = img;
                     await this.$forceUpdate();
                 }.bind(this));
-                
-
             } catch (e) {
                 console.log(e);
-
             };
-
-            
-
-            
         },
-
         methods: {
             getImage: async function (film) {
                 const imgurl = 'https://api.themoviedb.org/3/search/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&query=' + film.title;
